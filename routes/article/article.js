@@ -3,12 +3,13 @@ var database_name = "mongodb://localhost:27017/yzh_blog";
 
 // var db = mongoose.connect(database_name);
 var articleSchema = new mongoose.Schema({
-    articleId: {type: String},
+    articleId: {type: Number},
+    label: {type: Number},
+    authorId: {type: Number, default: 1},
     status: {type: Number},
     title: {type: String},
-    label: {type: Number},
     content: {type: String},
-    time: {type: Date, default: Date.now()},
+    time: {},
 });
 // var articleModel = db.model("article", articleSchema);
 
@@ -21,10 +22,10 @@ let dbData = {
             })
         })
     },
-    update(collectionName, params, callback){
+    update(collectionName, params, data, callback){
         mongoose.connect(database_name, (err, db) => {
             var collectionModel = db.model(collectionName, articleSchema);
-            collectionModel.update(params.articleId, params, (err, result) => {
+            collectionModel.update(params, data, (err, result) => {
                 callback(err, result);
             })
         })
