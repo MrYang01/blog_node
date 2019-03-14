@@ -3,7 +3,7 @@ var database_name = "mongodb://localhost:27017/yzh_blog";
 
 // var db = mongoose.connect(database_name);
 var articleSchema = new mongoose.Schema({
-    articleId: {type: Number},
+    articleId: {type: Number, index: true},
     label: {type: Number},
     authorId: {type: Number, default: 1},
     status: {type: Number},
@@ -12,12 +12,12 @@ var articleSchema = new mongoose.Schema({
     time: {},
 });
 // var articleModel = db.model("article", articleSchema);
-
+let opt = {_id: 0, __v: 0};
 let dbData = {
     select(collectionName, params, callback){
         mongoose.connect(database_name, (err,db) => {
             var collectionModel = db.model(collectionName, articleSchema);
-            collectionModel.find(params,(err, result) => {
+            collectionModel.find(params, opt, (err, result) => {
                 callback(err, result);
             })
         })
